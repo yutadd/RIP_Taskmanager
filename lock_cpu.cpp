@@ -20,8 +20,8 @@ void normal_th() {
 int main()
 {
     if (mode == 0) {
-    handle = CreateThread(0, 0, &high_load, 0, 0, 0);     //      スレッドを作成
-    SetThreadAffinityMask(handle, 1 << 1);
+        handle = CreateThread(0, 0, &high_load, 0, 0, 0);     //      スレッドを作成
+        SetThreadAffinityMask(handle, 1 << 0);
     }
     else {
         std::thread th_1(normal_th);
@@ -29,6 +29,7 @@ int main()
     }
     Sleep(30000);//WaitForSingleObject(handle[0], INFINITE);
     end_f = 1;
+    Sleep(1);
     printf("%d", i);
     //Benched for 30sec.
     //lock core:  665382469
