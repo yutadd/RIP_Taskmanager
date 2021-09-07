@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <time.h>
 #include <thread>
+#include <vector>
 
 static HANDLE handle = 0;
 static int end_f[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
@@ -22,18 +23,30 @@ void normal_th() {
 }
 int main()
 {
-    while (true) {
-        for (int i = 0; i < 16; i++) {
-            handle = CreateThread(0, 0, &high_load, (LPVOID)(i), 0, 0);
-            SetThreadAffinityMask(handle, 1 << (i));
-            end_f[(i)] = 0;
+    int ia = 0;
+    
+        for (ia = 0; ia < 16; ia++) {
+            handle = CreateThread(
+                0,
+                0,
+                &high_load,
+                (LPVOID)(ia),
+                0,
+                0);
+            SetThreadAffinityMask(handle, 1 << (ia));
+            end_f[(ia)] = 0;
         }
-        Sleep(310);
-        for (int i = 0; i < 16; i++) {
-            end_f[i] = 1;
+        while (true) {
+            Sleep(310);
+            for (ia = 0; ia < 16; ia++) {
+                end_f[ia] = 1;
+            }
+            Sleep(520);
+            for (ia = 0; ia < 16; ia++) {
+                end_f[ia] = 0;
+            }
         }
-        Sleep(520);
-    }
+    
     Sleep(40000);
     //Sleep(1);
     //printf("%d", i);
